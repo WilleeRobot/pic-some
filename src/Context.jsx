@@ -47,6 +47,7 @@ function ContextProvider({ children }) {
         addToCart,
         removeFromCart,
         cartItems,
+        setCartItems,
       }}
     >
       {children}
