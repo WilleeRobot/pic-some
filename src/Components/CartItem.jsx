@@ -1,18 +1,19 @@
 import PropTypes from "prop-types";
 import { Context } from "../Context";
-import { useContext, useState } from "react";
+import { useContext } from "react";
+import useHover from "../hooks/useHover";
 
 function CartItem({ item }) {
-  const [deleteActive, setDeleteActive] = useState(false);
+  //   const [deleteActive, setDeleteActive] = useState(false);
+  const [hover, ref] = useHover();
   const { removeFromCart } = useContext(Context);
 
   return (
     <div className="cart-item">
       <i
-        className={deleteActive ? "ri-delete-bin-fill" : "ri-delete-bin-line"}
+        className={hover ? "ri-delete-bin-fill" : "ri-delete-bin-line"}
         onClick={() => removeFromCart(item.id)}
-        onMouseOver={() => setDeleteActive(true)}
-        onMouseLeave={() => setDeleteActive(false)}
+        ref={ref}
       />
       <img src={item.url} width="130px" />
       <p>$5.99</p>
@@ -23,6 +24,7 @@ function CartItem({ item }) {
 CartItem.propTypes = {
   item: PropTypes.shape({
     url: PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired,
   }),
 };
 
