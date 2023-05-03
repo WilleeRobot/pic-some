@@ -1,12 +1,23 @@
-import { useContext } from "react";
+import { useContext, useState, useEffect } from "react";
 import { Context } from "../Context";
 import CartItem from "../Components/CartItem";
 
 function Cart() {
-  const { cartItems } = useContext(Context);
+  const [placingOrder, setPlacingOrder] = useState(false);
+  const { cartItems, setCartItems } = useContext(Context);
   const cartItemElements = cartItems.map((item) => {
     return <CartItem key={item.id} item={item} />;
   });
+
+  useEffect(() => {
+    if (placingOrder) {
+      setTimeout(() => {
+        console.log("Order placed!");
+        setCartItems([]);
+        setPlacingOrder(false);
+      }, 3000);
+    }
+  }, [placingOrder]);
 
   function calculateTotal() {
     let totalCost = cartItemElements.length * 5.99;
@@ -16,14 +27,24 @@ function Cart() {
     });
   }
 
+  function placeOrder() {
+    setPlacingOrder(true);
+  }
+
+  const buttonDiv = (
+    <div className="order-button">
+      <button onClick={placeOrder}>
+        {placingOrder ? "Ordering..." : "Place order"}
+      </button>
+    </div>
+  );
+
   return (
     <main className="cart-page">
       <h1>Checkout</h1>
       {cartItemElements}
       <p className="total-cost">Total: {calculateTotal()}</p>
-      <div className="order-button">
-        <button>Place order</button>
-      </div>
+      {cartItems.length > 0 && buttonDiv}
     </main>
   );
 }
