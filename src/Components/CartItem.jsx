@@ -21,7 +21,9 @@ function CartItem({ item }) {
 }
 
 CartItem.propTypes = {
-  item: PropTypes.object,
+  item: PropTypes.shape({
+    url: PropTypes.string.isRequired,
+  }),
 };
 
 export default CartItem;
